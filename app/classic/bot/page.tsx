@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import React, { useEffect, useState, useCallback, useMemo } from "react";
-import { Home, RotateCw } from "lucide-react";
+import { Home, RotateCw, ChevronsUpDown } from "lucide-react";
 import Image from "next/image";
 
 type Player = "X" | "O" | null;
@@ -318,9 +318,9 @@ const GameScreen = () => {
             </Link>
             <button
               onClick={handleChangeLevel}
-              className="px-3 py-2 text-lg hover:opacity-80 transition-opacity duration-150"
+              className="px-3 flex py-2 text-lg hover:opacity-80 transition-opacity duration-150"
             >
-              {`${currentLevel} Mode`}
+              {`${currentLevel} Mode`} <ChevronsUpDown />
             </button>
             <div className="w-[44px]"></div>
           </header>

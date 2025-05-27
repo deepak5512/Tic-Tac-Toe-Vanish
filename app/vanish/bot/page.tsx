@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState, useCallback } from "react";
-import { Home, RotateCw } from "lucide-react";
+import { ChevronsUpDown, Home, RotateCw } from "lucide-react";
 
 const IMAGE_PATH_PREFIX = "/";
 
@@ -444,9 +444,9 @@ const VanishModeGameScreen = () => {
             </Link>
             <button
               onClick={handleChangeLevel}
-              className="px-3 py-2 text-lg hover:opacity-80 transition-opacity duration-150"
+              className="px-3 flex py-2 text-lg hover:opacity-80 transition-opacity duration-150"
             >
-              {`${currentLevel} Mode`}
+              {`${currentLevel} Mode`} <ChevronsUpDown />
             </button>
             <div className="w-[44px] sm:w-[46px]"></div>
           </header>
