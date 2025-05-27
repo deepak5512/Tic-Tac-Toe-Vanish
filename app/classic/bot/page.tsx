@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useMemo } from "react";
 import { Home, RotateCw } from "lucide-react";
 import Image from "next/image";
 
@@ -31,16 +31,19 @@ const GameScreen = () => {
   const [winningLine, setWinningLine] = useState<number[] | null>(null);
   const [lineDrawData, setLineDrawData] = useState<LineDrawData | null>(null);
 
-  const winningCombinations = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-  ];
+  const winningCombinations = useMemo(
+    () => [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6],
+    ],
+    []
+  );
 
   const startNextRound = useCallback(() => {
     setBoard(Array(9).fill(null));
@@ -71,9 +74,11 @@ const GameScreen = () => {
           return { winner: currentBoard[a], line: combo };
         }
       }
+
       if (currentBoard.every((cell) => cell !== null)) {
         return { winner: "draw", line: null };
       }
+
       return { winner: null, line: null };
     },
     [winningCombinations]
