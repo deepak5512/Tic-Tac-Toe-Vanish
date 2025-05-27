@@ -1,12 +1,38 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
-import { Home, Grid3X3, History } from "lucide-react";
+import { Home, User, Users } from "lucide-react";
 import { motion } from "framer-motion";
 
 export default function HomePage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const mode = searchParams.get("mode");
+
+  const handlePress = (playerType: "solo" | "friend") => {
+    if (!mode) {
+      console.warn("Mode not specified!");
+      return;
+    }
+
+    let screen = "";
+
+    if (mode === "classic") {
+      screen =
+        playerType === "solo" ? "/classic/bot" : "/classic/friend";
+    } else if (mode === "dynamic") {
+      screen =
+        playerType === "solo"
+          ? "/vanish/bot"
+          : "/vanish/friend";
+    } else {
+      console.warn("Unknown mode:", mode);
+      return;
+    }
+
+    router.push(screen as any);
+  };
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden">
@@ -61,28 +87,28 @@ export default function HomePage() {
         {/* Buttons */}
         <div className="flex flex-col items-center gap-6 mt-10 w-full max-w-md">
           <button
-            onClick={() => router.push("/select-players?mode=classic")}
+            onClick={() => handlePress("solo")}
             className="cursor-pointer relative flex items-center justify-center bg-white text-[#333] w-full py-4 px-6 rounded-xl shadow-md hover:scale-[1.03] transition-transform duration-200"
           >
-            <Grid3X3 className="absolute left-5 text-black" size={24} />
+            <User className="absolute left-5 text-black" size={24} />
             <span
               className="text-[17px] text-center w-full"
               style={{ fontFamily: "Revalia" }}
             >
-              Classic
+              Solo
             </span>
           </button>
 
           <button
-            onClick={() => router.push("/select-players?mode=dynamic")}
+            onClick={() => handlePress("friend")}
             className="cursor-pointer relative flex items-center justify-center bg-white text-[#333] w-full py-4 px-6 rounded-xl shadow-md hover:scale-[1.03] transition-transform duration-200"
           >
-            <History className="absolute left-5 text-black" size={24} />
+            <Users className="absolute left-5 text-black" size={24} />
             <span
               className="text-[17px] text-center w-full"
               style={{ fontFamily: "Revalia" }}
             >
-              Vanish
+              Play with a friend
             </span>
           </button>
         </div>
