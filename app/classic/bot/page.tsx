@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import React, { useEffect, useState, useCallback } from "react";
 import { Home, RotateCw } from "lucide-react";
 import Image from "next/image";
@@ -22,8 +21,6 @@ interface LineDrawData {
 }
 
 const GameScreen = () => {
-  const router = useRouter();
-
   const levels: Level[] = ["Easy", "Medium", "Hard"];
   const [currentLevel, setCurrentLevel] = useState<Level>("Easy");
 
@@ -62,22 +59,25 @@ const GameScreen = () => {
     }
   }, [isGameOver, startNextRound]);
 
-  const checkWinner = (currentBoard: Player[]): GameResult => {
-    for (let combo of winningCombinations) {
-      const [a, b, c] = combo;
-      if (
-        currentBoard[a] &&
-        currentBoard[a] === currentBoard[b] &&
-        currentBoard[a] === currentBoard[c]
-      ) {
-        return { winner: currentBoard[a], line: combo };
+  const checkWinner = useCallback(
+    (currentBoard: Player[]): GameResult => {
+      for (const combo of winningCombinations) {
+        const [a, b, c] = combo;
+        if (
+          currentBoard[a] &&
+          currentBoard[a] === currentBoard[b] &&
+          currentBoard[a] === currentBoard[c]
+        ) {
+          return { winner: currentBoard[a], line: combo };
+        }
       }
-    }
-    if (currentBoard.every((cell) => cell !== null)) {
-      return { winner: "draw", line: null };
-    }
-    return { winner: null, line: null };
-  };
+      if (currentBoard.every((cell) => cell !== null)) {
+        return { winner: "draw", line: null };
+      }
+      return { winner: null, line: null };
+    },
+    [winningCombinations]
+  );
 
   const makeBotMove = useCallback(
     (currentBoard: Player[]) => {
@@ -187,7 +187,7 @@ const GameScreen = () => {
         }
       }
     },
-    [isGameOver, currentLevel, winningCombinations]
+    [isGameOver, currentLevel, winningCombinations, checkWinner]
   );
 
   const handleCellPress = (index: number) => {
@@ -267,7 +267,9 @@ const GameScreen = () => {
   const renderCellContent = (cellValue: Player) => {
     if (cellValue === "X")
       return (
-        <img
+        <Image
+          width={25}
+          height={25}
           src={`/cross.png`}
           alt="X"
           className="w-3/5 h-3/5 object-contain animate-scale-in"
@@ -275,7 +277,9 @@ const GameScreen = () => {
       );
     if (cellValue === "O")
       return (
-        <img
+        <Image
+          width={25}
+          height={25}
           src={`/circle.png`}
           alt="O"
           className="w-3/5 h-3/5 object-contain animate-scale-in"
@@ -302,7 +306,7 @@ const GameScreen = () => {
             <Link href="/" passHref>
               <button
                 aria-label="Go to home page"
-                className="bg-[rgba(65,76,102,0.8)] p-2.5 cursor-pointer rounded-md hover:opacity-80 transition-opacity duration-150" // MODIFIED
+                className="bg-[rgba(65,76,102,0.8)] p-2.5 cursor-pointer rounded-md hover:opacity-80 transition-opacity duration-150"
               >
                 <Home />
               </button>
@@ -320,7 +324,9 @@ const GameScreen = () => {
           <section className="w-full flex justify-between items-center mb-6 text-sm sm:text-base">
             <div className="bg-[rgba(45,58,75,0.85)] p-3 rounded-lg w-[48%] flex items-center">
               {" "}
-              <img
+              <Image
+                width={25}
+                height={25}
                 src={`/circle.png`}
                 alt="Player O icon"
                 className="w-5 h-5 sm:w-6 sm:h-6 mr-2"
@@ -330,7 +336,9 @@ const GameScreen = () => {
             </div>
             <div className="bg-[rgba(45,58,75,0.85)] p-3 rounded-lg w-[48%] flex items-center">
               {" "}
-              <img
+              <Image
+                width={20}
+                height={20}
                 src={`/cross.png`}
                 alt="Player X icon"
                 className="w-4 h-4 sm:w-5 sm:h-5 mr-2"

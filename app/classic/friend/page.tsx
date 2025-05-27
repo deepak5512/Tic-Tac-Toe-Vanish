@@ -3,7 +3,6 @@
 import { Home, RotateCw } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import React, { useEffect, useState, useCallback } from "react";
 
 const IMAGE_PATH_PREFIX = "/";
@@ -24,7 +23,6 @@ interface LineDrawData {
 }
 
 const PvPGameScreen = () => {
-  const router = useRouter();
 
   const [board, setBoard] = useState<BoardCell[]>(Array(9).fill(null));
   const [currentPlayer, setCurrentPlayer] = useState<Player>("O");
@@ -63,7 +61,7 @@ const PvPGameScreen = () => {
   }, [isGameOver, startNextRound]);
 
   const checkWinner = (currentBoard: BoardCell[]): GameResult => {
-    for (let combo of winningCombinations) {
+    for (const combo of winningCombinations) {
       const [a, b, c] = combo;
       if (
         currentBoard[a] &&
@@ -156,7 +154,9 @@ const PvPGameScreen = () => {
   const renderCellContent = (cellValue: BoardCell) => {
     if (cellValue === "X")
       return (
-        <img
+        <Image
+        width={25}
+        height={25}
           src={`${IMAGE_PATH_PREFIX}cross.png`}
           alt="X"
           className="w-3/5 h-3/5 object-contain animate-scale-in"
@@ -164,7 +164,9 @@ const PvPGameScreen = () => {
       );
     if (cellValue === "O")
       return (
-        <img
+        <Image
+        width={25}
+        height={25}
           src={`${IMAGE_PATH_PREFIX}circle.png`}
           alt="O"
           className="w-3/5 h-3/5 object-contain animate-scale-in"
@@ -214,7 +216,9 @@ const PvPGameScreen = () => {
           {/* Score Container */}
           <section className="w-full flex justify-between items-center mb-6 text-sm sm:text-base">
             <div className="bg-[rgba(45,58,75,0.85)] p-3 rounded-lg w-[48%] flex items-center">
-              <img
+              <Image
+              width={25}
+              height={25}
                 src={`${IMAGE_PATH_PREFIX}circle.png`}
                 alt="Player O icon"
                 className="w-5 h-5 sm:w-6 sm:h-6 mr-2"
@@ -223,7 +227,9 @@ const PvPGameScreen = () => {
               <span className="ml-auto font-bold">{scores.O}</span>
             </div>
             <div className="bg-[rgba(45,58,75,0.85)] p-3 rounded-lg w-[48%] flex items-center">
-              <img
+              <Image
+              width={20}
+              height={20}
                 src={`${IMAGE_PATH_PREFIX}cross.png`}
                 alt="Player X icon"
                 className="w-4 h-4 sm:w-5 sm:h-5 mr-2"

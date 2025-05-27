@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import React, { useEffect, useState, useCallback } from "react";
 import { Home, RotateCw } from "lucide-react";
 import Image from "next/image";
@@ -45,8 +44,6 @@ function calculateWinnerInfo(board: BoardCell[]): {
 }
 
 const PvPVanishModeGameScreen = () => {
-  const router = useRouter();
-
   const [board, setBoard] = useState<BoardCell[]>(Array(9).fill(null));
   const [playerOMoves, setPlayerOMoves] = useState<number[]>([]);
   const [playerXMoves, setPlayerXMoves] = useState<number[]>([]);
@@ -197,7 +194,9 @@ const PvPVanishModeGameScreen = () => {
   const renderCellContent = (cellValue: BoardCell) => {
     if (cellValue === "X")
       return (
-        <img
+        <Image
+          width={25}
+          height={25}
           src={`${IMAGE_PATH_PREFIX}cross.png`}
           alt="X"
           className="w-3/5 h-3/5 object-contain animate-scale-in"
@@ -205,7 +204,9 @@ const PvPVanishModeGameScreen = () => {
       );
     if (cellValue === "O")
       return (
-        <img
+        <Image
+          width={25}
+          height={25}
           src={`${IMAGE_PATH_PREFIX}circle.png`}
           alt="O"
           className="w-3/5 h-3/5 object-contain animate-scale-in"
@@ -264,7 +265,9 @@ const PvPVanishModeGameScreen = () => {
           {/* Score Container */}
           <section className="w-full flex justify-between items-center mb-6 text-sm sm:text-base">
             <div className="bg-[rgba(45,58,75,0.85)] p-3 rounded-lg w-[48%] flex items-center">
-              <img
+              <Image
+                width={25}
+                height={25}
                 src={`${IMAGE_PATH_PREFIX}circle.png`}
                 alt="Player O icon"
                 className="w-5 h-5 sm:w-6 sm:h-6 mr-2"
@@ -273,7 +276,9 @@ const PvPVanishModeGameScreen = () => {
               <span className="ml-auto font-bold">{gameScores.O}</span>
             </div>
             <div className="bg-[rgba(45,58,75,0.85)] p-3 rounded-lg w-[48%] flex items-center">
-              <img
+              <Image
+                width={20}
+                height={20}
                 src={`${IMAGE_PATH_PREFIX}cross.png`}
                 alt="Player X icon"
                 className="w-4 h-4 sm:w-5 sm:h-5 mr-2"

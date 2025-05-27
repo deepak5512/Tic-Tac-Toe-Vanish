@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import React, { useEffect, useState, useCallback } from "react";
 import { Home, RotateCw } from "lucide-react";
 
@@ -186,7 +185,6 @@ function getRandomMove(board: Player[]): number {
 }
 
 const VanishModeGameScreen = () => {
-  const router = useRouter();
 
   const [board, setBoard] = useState<Player[]>(Array(9).fill(null));
   const [humanMoves, setHumanMoves] = useState<number[]>([]);
@@ -217,12 +215,10 @@ const VanishModeGameScreen = () => {
   }, []);
 
   useEffect(() => {
-    if (winner || isDraw) return; // Only check if game is ongoing
+    if (winner || isDraw) return;
 
     const { winner: currentWinner, line: currentWinningLine } =
       calculateWinnerInfo(board);
-    // A draw in Vanish mode is tricky. It's a draw if no one can win and no moves are left,
-    // or if a repetitive state might occur (harder to detect). For now, simple draw:
     const currentIsDraw =
       !currentWinner &&
       humanMoves.length === 3 &&
@@ -243,6 +239,38 @@ const VanishModeGameScreen = () => {
     }
   }, [board, winner, isDraw, humanMoves.length, botMoves.length]);
 
+  const makeMove = useCallback(
+    (index: number, player: Player) => {
+      if (winner || isDraw || board[index]) return;
+
+      const newBoard = [...board];
+      newBoard[index] = player;
+      let newPlayerMoves: number[];
+
+      if (player === HUMAN_PLAYER) {
+        newPlayerMoves = [...humanMoves, index];
+        if (newPlayerMoves.length > 3) {
+          const oldestMove = newPlayerMoves.shift(); // Get and remove oldest
+          if (oldestMove !== undefined) newBoard[oldestMove] = null; // Vanish from board
+        }
+        setHumanMoves(newPlayerMoves);
+      } else {
+        // BOT_PLAYER
+        newPlayerMoves = [...botMoves, index];
+        if (newPlayerMoves.length > 3) {
+          const oldestMove = newPlayerMoves.shift();
+          if (oldestMove !== undefined) newBoard[oldestMove] = null;
+        }
+        setBotMoves(newPlayerMoves);
+      }
+
+      setBoard(newBoard);
+      // Winner check is now in a separate useEffect, so just switch turn
+      setIsHumanTurn(player === BOT_PLAYER);
+    },
+    [board, winner, isDraw, humanMoves, botMoves] // Removed resetGame, calculateWinnerInfo, setGameScores from deps
+  );
+
   useEffect(() => {
     if (!isHumanTurn && !winner && !isDraw) {
       const timer = setTimeout(() => {
@@ -262,8 +290,6 @@ const VanishModeGameScreen = () => {
         if (move !== -1) {
           makeMove(move, BOT_PLAYER);
         } else {
-          // If bot cannot make a move (e.g., board full, no winning move, and random also fails)
-          // this might indicate a draw or an issue. For now, assume draw if no moves.
           if (board.every((cell) => cell !== null)) setIsDraw(true);
         }
       }, 700); // Slightly longer delay for bot
@@ -278,6 +304,7 @@ const VanishModeGameScreen = () => {
     humanMoves,
     botMoves,
     resetGame,
+    makeMove,
   ]); // Added resetGame
 
   useEffect(() => {
@@ -331,38 +358,6 @@ const VanishModeGameScreen = () => {
     }
   }, [winner, isDraw, resetGame]);
 
-  const makeMove = useCallback(
-    (index: number, player: Player) => {
-      if (winner || isDraw || board[index]) return;
-
-      const newBoard = [...board];
-      newBoard[index] = player;
-      let newPlayerMoves: number[];
-
-      if (player === HUMAN_PLAYER) {
-        newPlayerMoves = [...humanMoves, index];
-        if (newPlayerMoves.length > 3) {
-          const oldestMove = newPlayerMoves.shift(); // Get and remove oldest
-          if (oldestMove !== undefined) newBoard[oldestMove] = null; // Vanish from board
-        }
-        setHumanMoves(newPlayerMoves);
-      } else {
-        // BOT_PLAYER
-        newPlayerMoves = [...botMoves, index];
-        if (newPlayerMoves.length > 3) {
-          const oldestMove = newPlayerMoves.shift();
-          if (oldestMove !== undefined) newBoard[oldestMove] = null;
-        }
-        setBotMoves(newPlayerMoves);
-      }
-
-      setBoard(newBoard);
-      // Winner check is now in a separate useEffect, so just switch turn
-      setIsHumanTurn(player === BOT_PLAYER);
-    },
-    [board, winner, isDraw, humanMoves, botMoves] // Removed resetGame, calculateWinnerInfo, setGameScores from deps
-  );
-
   const handleCellPress = (index: number) => {
     if (isHumanTurn && !winner && !isDraw && !board[index]) {
       makeMove(index, HUMAN_PLAYER);
@@ -383,7 +378,9 @@ const VanishModeGameScreen = () => {
   const renderCellContent = (cellValue: Player) => {
     if (cellValue === BOT_PLAYER)
       return (
-        <img
+        <Image
+        width={25}
+        height={25}
           src={`${IMAGE_PATH_PREFIX}cross.png`}
           alt="X"
           className="w-3/5 h-3/5 object-contain animate-scale-in"
@@ -391,7 +388,9 @@ const VanishModeGameScreen = () => {
       );
     if (cellValue === HUMAN_PLAYER)
       return (
-        <img
+        <Image
+        width={25}
+        height={25}
           src={`${IMAGE_PATH_PREFIX}circle.png`}
           alt="O"
           className="w-3/5 h-3/5 object-contain animate-scale-in"
@@ -455,7 +454,9 @@ const VanishModeGameScreen = () => {
           {/* Score Container */}
           <section className="w-full flex justify-between items-center mb-6 text-sm sm:text-base">
             <div className="bg-[rgba(45,58,75,0.85)] p-3 rounded-lg w-[48%] flex items-center">
-              <img
+              <Image
+              width={25}
+              height={25}
                 src={`${IMAGE_PATH_PREFIX}circle.png`}
                 alt="Player O icon"
                 className="w-5 h-5 sm:w-6 sm:h-6 mr-2"
@@ -464,7 +465,9 @@ const VanishModeGameScreen = () => {
               <span className="ml-auto font-bold">{gameScores.you}</span>
             </div>
             <div className="bg-[rgba(45,58,75,0.85)] p-3 rounded-lg w-[48%] flex items-center">
-              <img
+              <Image
+              width={20}
+              height={20}
                 src={`${IMAGE_PATH_PREFIX}cross.png`}
                 alt="Player X icon"
                 className="w-4 h-4 sm:w-5 sm:h-5 mr-2"

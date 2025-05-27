@@ -1,12 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import React from "react";
 import { Home } from "lucide-react";
 import Image from "next/image";
-
-const IMAGE_PATH_PREFIX = "/";
 
 const APP_VERSION = "1.0.0";
 const DEVELOPER_NAME = "Deepak Bhatter";
@@ -14,8 +11,6 @@ const CONTACT_EMAIL = "deepakbhatter5512@gmail.com";
 const WEBSITE_URL = "https://portfolio-lovat-phi-17.vercel.app/";
 
 const AboutScreen = () => {
-  const router = useRouter();
-
   return (
     <>
       <div className="min-h-screen bg-cover bg-center flex flex-col items-center font-revalia text-white">

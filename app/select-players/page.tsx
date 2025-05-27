@@ -31,7 +31,7 @@ export default function HomePage() {
       return;
     }
 
-    router.push(screen as any);
+    router.push(screen);
   };
 
   return (

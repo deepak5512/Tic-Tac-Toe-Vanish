@@ -58,7 +58,6 @@ const GameRulesScreen = () => {
               <ArrowLeft size={24} color="white" />
             </button>
           </header>
-
           {/* Main Content */}
           <div className="pt-10 sm:pt-16">
             {" "}
@@ -77,7 +76,9 @@ const GameRulesScreen = () => {
                   <section className="flex flex-row items-center py-5">
                     {" "}
                     {/* ruleItem, py for marginVertical */}
-                    <img
+                    <Image
+                      width={60}
+                      height={60}
                       src={rule.icon}
                       alt={`${rule.title} icon`}
                       className="w-12 h-12 mr-4 sm:mr-4.5 object-contain"
@@ -99,7 +100,9 @@ const GameRulesScreen = () => {
                         {rule.description}
                       </p>
                     </div>
-                    <img
+                    <Image
+                      width={60}
+                      height={60}
                       src={rule.boardImage}
                       alt={`${rule.title} board example`}
                       className="w-[75px] h-[75px] object-contain"
