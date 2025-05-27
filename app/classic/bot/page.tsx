@@ -96,7 +96,7 @@ const GameScreen = () => {
         for (let i = 0; i < boardState.length; i++) {
           if (boardState[i] === null) {
             boardState[i] = "X";
-            let moveVal = minimax(boardState, 0, false);
+            const moveVal = minimax(boardState, 0, false);
             boardState[i] = null;
             if (moveVal > bestVal) {
               bestVal = moveVal;
@@ -187,7 +187,7 @@ const GameScreen = () => {
         }
       }
     },
-    [isGameOver, currentLevel, winningCombinations, checkWinner]
+    [isGameOver, currentLevel, checkWinner]
   );
 
   const handleCellPress = (index: number) => {
