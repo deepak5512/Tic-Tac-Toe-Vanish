@@ -40,9 +40,9 @@ const GameRulesScreen = () => {
             alt="Background"
             layout="fill"
             objectFit="cover"
-            className="blur-xs"
           />
         </div>
+        <div className="absolute inset-0 bg-black/30 backdrop-blur-xs -z-10" />
 
         <main className="flex-col items-center justify-between w-full max-w-2xl flex-grow p-5 pt-8 sm:pt-12">
           {" "}
