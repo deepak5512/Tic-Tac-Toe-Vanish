@@ -421,7 +421,7 @@ const VanishModeGameScreen = () => {
 
   return (
     <>
-      <div className="min-h-screen bg-game-bg bg-cover bg-center flex flex-col items-center font-revalia text-white">
+      <div className="min-h-screen bg-game-bg bg-cover bg-center flex flex-col items-center overflow-hidden font-revalia text-white">
         <div className="absolute inset-0 -z-10">
           <Image
             src="/background.png"

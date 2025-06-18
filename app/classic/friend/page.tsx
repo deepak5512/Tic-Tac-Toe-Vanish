@@ -187,7 +187,7 @@ const PvPGameScreen = () => {
 
   return (
     <>
-      <div className="h-screen w-screen flex items-center justify-center bg-cover bg-center font-revalia text-white">
+      <div className="h-screen w-screen flex items-center justify-center bg-cover bg-center overflow-hidden font-revalia text-white">
         <div className="absolute inset-0 -z-10">
           <Image
             src="/background.png"
