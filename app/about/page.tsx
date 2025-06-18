@@ -5,10 +5,10 @@ import React from "react";
 import { Home } from "lucide-react";
 import Image from "next/image";
 
-const APP_VERSION = "1.0.0";
+const APP_VERSION = "1.0.1";
 const DEVELOPER_NAME = "Deepak Bhatter";
 const CONTACT_EMAIL = "deepakbhatter5512@gmail.com";
-const WEBSITE_URL = "https://portfolio-lovat-phi-17.vercel.app/";
+const WEBSITE_URL = "https://portfolio-website-pearl-nine.vercel.app/";
 
 const AboutScreen = () => {
   return (

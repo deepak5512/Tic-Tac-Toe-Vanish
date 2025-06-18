@@ -428,7 +428,6 @@ const VanishModeGameScreen = () => {
             alt="Background"
             layout="fill"
             objectFit="cover"
-            className="blur-xs"
           />
         </div>
         <main className="flex flex-col items-center justify-between w-full max-w-2xl flex-grow p-5 pt-8 sm:pt-12">

@@ -13,7 +13,7 @@ export default function SelectPlayersPage() {
               alt="Background"
               layout="fill"
               objectFit="cover"
-              className="blur-xs"
+              // className="blur-xs"
             />
           </div>
           <div className="flex flex-col items-center gap-4">

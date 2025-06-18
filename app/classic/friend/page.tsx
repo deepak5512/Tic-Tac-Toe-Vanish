@@ -187,14 +187,13 @@ const PvPGameScreen = () => {
 
   return (
     <>
-      <div className="min-h-screen bg-game-bg bg-cover bg-center flex flex-col items-center font-revalia text-white">
+      <div className="h-screen w-screen flex items-center justify-center bg-cover bg-center font-revalia text-white">
         <div className="absolute inset-0 -z-10">
           <Image
             src="/background.png"
             alt="Background"
-            layout="fill"
+            fill
             objectFit="cover"
-            className="blur-xs"
           />
         </div>
         <main className="flex flex-col items-center justify-between w-full max-w-2xl flex-grow p-5 pt-8 sm:pt-12">
